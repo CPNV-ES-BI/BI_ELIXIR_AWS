@@ -1,5 +1,6 @@
 defmodule DataObjectTest do
   use ExUnit.Case
+  alias BusinessIntelligence.DataObject
   doctest DataObject
 
   test "DoesExist_ExistsCase_True" do
