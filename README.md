@@ -1,5 +1,4 @@
-# BusinessIntelligence
-
+# EasyVault
 <a name="readme-top"></a>
 <details>
   <summary>Table of Contents</summary>
@@ -22,13 +21,17 @@
 
 ### Built With
 
-* [Elixir - 1.14.2][elixir-url]
+* [Elixir - 1.14][elixir-url]
+* [Phoenix - 1.6.14][phoenix-url]
+* [Oban - 2.13.4][oban-url]
+* [SQLite - 3][sqlite-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 Since this project is written in Elixir, you will need to install the BEAM.
+You may also need to launch a container for the PostgreSQL database used to store information about background tasks.
 
 ### Prerequisites
 #### Erlang + Elixir
@@ -42,20 +45,54 @@ Since this project is written in Elixir, you will need to install the BEAM.
   ```
 
 ### Installation
+#### On your machine
 
 1. Elixir dependencies
    ```sh
    mix deps.get
    ```
+2. Create database and lanch migrations
+   ```sh
+   mix ecto.create
+   mix ecto.migrate
+   ```
+6. Finally, launch the web server
+   ```sh
+   mix phx.server
+   ```
+
+   Or you if want to have a console and execute Elixir code in live:
+   
+   ```sh
+   iex -S mix phx.server
+   ```
+
+#### Docker
+
+1. Build docker's image
+   ```sh
+   docker build -t business_intelligence .
+   ```
+2. Launch the container using `docker-compose`
+   ```sh
+   docker-compose up -d
+   ```
+   This will open two ports: `4000` and `4369`
+6. Finally, launch the web server
+   ```sh
+   mix phx.server
+   ```
+
+   Or you if want to have a console and execute Elixir code in live:
+   
+   ```sh
+   iex -S mix phx.server
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Documentation
+## Docs
 The documentation of this project can be genrated by [ExDoc](https://github.com/elixir-lang/ex_doc).
-```sh
-mix docs
-```
-If you only want to generate
 ```sh
 mix docs
 ```
@@ -64,25 +101,6 @@ Or, if you want to generate the documentation and open it in your browser, type:
 ```sh
 mix docs --open
 ```
-
-## Tests
-If you want to run all tests, type:
-```sh
-mix test
-```
-
-Or if you want to run all tests of a file:
-```sh
-mix test test/<YOUR_TEST_FILE>.exs
-```
-
-Finally, to run a specific test:
-```sh
-mix test test/<YOUR_TEST_FILE>.exs:<LINE_NUMBER_OF_THE_REST>
-```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

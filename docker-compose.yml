@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  app:
+    image: business_intelligence
+    build: .
+    container_name: business_intelligence
+    networks:
+      phoenix:
+        ipv4_address: 172.40.0.2
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+    command: elixir --name docker@172.40.0.2 --cookie business_intelligence -S mix phx.server
+
+networks:
+  phoenix:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.40.0.0/24
+          gateway: 172.40.0.1
