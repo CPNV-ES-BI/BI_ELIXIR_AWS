@@ -7,12 +7,12 @@
 # General application configuration
 import Config
 
-config :bi_aws,
+config :business_intelligence,
   ecto_repos: [BusinessIntelligence.Repo],
   generators: [binary_id: true]
 
 # Configures the endpoint
-config :bi_aws, BusinessIntelligenceWeb.Endpoint,
+config :business_intelligence, BusinessIntelligenceWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: BusinessIntelligenceWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: BusinessIntelligence.PubSub,
@@ -25,7 +25,7 @@ config :bi_aws, BusinessIntelligenceWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :bi_aws, BusinessIntelligence.Mailer, adapter: Swoosh.Adapters.Local
+config :business_intelligence, BusinessIntelligence.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false

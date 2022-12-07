@@ -1,8 +1,8 @@
 import Config
 
 # Configure your database
-config :bi_aws, BusinessIntelligence.Repo,
-  database: Path.expand("../bi_aws_dev.db", Path.dirname(__ENV__.file)),
+config :business_intelligence, BusinessIntelligence.Repo,
+  database: Path.expand("../business_intelligence_dev.db", Path.dirname(__ENV__.file)),
   pool_size: 5,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true
@@ -13,7 +13,7 @@ config :bi_aws, BusinessIntelligence.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :bi_aws, BusinessIntelligenceWeb.Endpoint,
+config :business_intelligence, BusinessIntelligenceWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {0, 0, 0, 0}, port: 4000],

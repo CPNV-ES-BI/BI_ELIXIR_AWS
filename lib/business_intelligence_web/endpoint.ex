@@ -1,12 +1,12 @@
 defmodule BusinessIntelligenceWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :bi_aws
+  use Phoenix.Endpoint, otp_app: :business_intelligence
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_bi_aws_key",
+    key: "_business_intelligence_key",
     signing_salt: "Trt+9Ptm"
   ]
 
@@ -18,7 +18,7 @@ defmodule BusinessIntelligenceWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :bi_aws,
+    from: :business_intelligence,
     gzip: false,
     only: ~w(assets fonts images favicon.ico robots.txt)
 
@@ -26,7 +26,7 @@ defmodule BusinessIntelligenceWeb.Endpoint do
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :bi_aws
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :business_intelligence
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

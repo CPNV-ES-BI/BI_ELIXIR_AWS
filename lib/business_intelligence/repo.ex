@@ -1,5 +1,5 @@
 defmodule BusinessIntelligence.Repo do
   use Ecto.Repo,
-    otp_app: :bi_aws,
+    otp_app: :business_intelligence,
     adapter: Ecto.Adapters.SQLite3
 end

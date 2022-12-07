@@ -26,3 +26,5 @@ business_intelligence-*.tar
 *.db
 *.db-*
 
+# Elixir LS
+.elixir_ls/*

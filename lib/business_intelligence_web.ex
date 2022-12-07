@@ -30,7 +30,7 @@ defmodule BusinessIntelligenceWeb do
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/bi_aws_web/templates",
+        root: "lib/business_intelligence_web/templates",
         namespace: BusinessIntelligenceWeb
 
       # Import convenience functions from controllers

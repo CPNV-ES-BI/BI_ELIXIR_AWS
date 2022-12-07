@@ -3,7 +3,7 @@ defmodule BusinessIntelligence.Release do
   Used for executing DB release tasks when run in production without Mix
   installed.
   """
-  @app :bi_aws
+  @app :business_intelligence
 
   def migrate do
     load_app()

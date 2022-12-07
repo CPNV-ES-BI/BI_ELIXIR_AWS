@@ -12,12 +12,12 @@ import Config
 # If you use `mix release`, you need to explicitly enable the server
 # by passing the PHX_SERVER=true when you start it:
 #
-#     PHX_SERVER=true bin/bi_aws start
+#     PHX_SERVER=true bin/business_intelligence start
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
 if System.get_env("PHX_SERVER") do
-  config :bi_aws, BusinessIntelligenceWeb.Endpoint, server: true
+  config :business_intelligence, BusinessIntelligenceWeb.Endpoint, server: true
 end
 
 if config_env() == :prod do
@@ -25,10 +25,10 @@ if config_env() == :prod do
     System.get_env("DATABASE_PATH") ||
       raise """
       environment variable DATABASE_PATH is missing.
-      For example: /etc/bi_aws/bi_aws.db
+      For example: /etc/business_intelligence/business_intelligence.db
       """
 
-  config :bi_aws, BusinessIntelligence.Repo,
+  config :business_intelligence, BusinessIntelligence.Repo,
     database: database_path,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5")
 
@@ -47,7 +47,7 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
-  config :bi_aws, BusinessIntelligenceWeb.Endpoint,
+  config :business_intelligence, BusinessIntelligenceWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
       # Enable IPv6 and bind on all interfaces.
@@ -65,7 +65,7 @@ if config_env() == :prod do
   # Also, you may need to configure the Swoosh API client of your choice if you
   # are not using SMTP. Here is an example of the configuration:
   #
-  #     config :bi_aws, BusinessIntelligence.Mailer,
+  #     config :business_intelligence, BusinessIntelligence.Mailer,
   #       adapter: Swoosh.Adapters.Mailgun,
   #       api_key: System.get_env("MAILGUN_API_KEY"),
   #       domain: System.get_env("MAILGUN_DOMAIN")

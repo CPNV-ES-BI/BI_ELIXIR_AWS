@@ -31,23 +31,23 @@ defmodule BusinessIntelligenceWeb.Telemetry do
       ),
 
       # Database Metrics
-      summary("bi_aws.repo.query.total_time",
+      summary("business_intelligence.repo.query.total_time",
         unit: {:native, :millisecond},
         description: "The sum of the other measurements"
       ),
-      summary("bi_aws.repo.query.decode_time",
+      summary("business_intelligence.repo.query.decode_time",
         unit: {:native, :millisecond},
         description: "The time spent decoding the data received from the database"
       ),
-      summary("bi_aws.repo.query.query_time",
+      summary("business_intelligence.repo.query.query_time",
         unit: {:native, :millisecond},
         description: "The time spent executing the query"
       ),
-      summary("bi_aws.repo.query.queue_time",
+      summary("business_intelligence.repo.query.queue_time",
         unit: {:native, :millisecond},
         description: "The time spent waiting for a database connection"
       ),
-      summary("bi_aws.repo.query.idle_time",
+      summary("business_intelligence.repo.query.idle_time",
         unit: {:native, :millisecond},
         description:
           "The time the connection spent waiting before being checked out for the query"
