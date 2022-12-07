@@ -91,6 +91,23 @@ You may also need to launch a container for the PostgreSQL database used to stor
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Tests
+In order to run all tests type:
+
+```sh
+MIX_ENV=test mix test
+```
+
+If you want to run all tests of a file
+```sh
+MIX_ENV=test mix test ./test/<FILE_TEST>.exs
+```
+
+Or, if you only want to run a specific test
+```sh
+MIX_ENV=test mix test ./test/<FILE_TEST>.exs:<LINE_NUMBER>
+```
+
 ## Docs
 The documentation of this project can be genrated by [ExDoc](https://github.com/elixir-lang/ex_doc).
 ```sh
