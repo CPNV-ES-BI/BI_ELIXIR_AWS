@@ -20,6 +20,10 @@ if System.get_env("PHX_SERVER") do
   config :business_intelligence, BusinessIntelligenceWeb.Endpoint, server: true
 end
 
+if Config.config_env() == :dev or Config.config_env() == :test do
+  DotenvParser.load_file(".env")
+end
+
 if config_env() == :prod do
   database_path =
     System.get_env("DATABASE_PATH") ||

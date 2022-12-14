@@ -38,6 +38,29 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :ex_aws,
+  access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],
+  secret_access_key: [
+    {:system, "AWS_SECRET_ACCESS_KEY"},
+    :instance_role
+  ]
+
+config :ex_aws, :hackney_opts,
+  follow_redirect: true,
+  recv_timeout: 30_000
+
+config :ex_aws,
+  region: "eu-west-2"
+
+config :ex_aws,
+  normalize_path: false
+
+# default values shown below
+config :ex_aws, :retries,
+  max_attempts: 10,
+  base_backoff_in_ms: 10,
+  max_backoff_in_ms: 10_000
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

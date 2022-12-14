@@ -28,3 +28,6 @@ business_intelligence-*.tar
 
 # Elixir LS
 .elixir_ls/*
+
+# Credentials
+.env
