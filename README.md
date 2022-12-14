@@ -139,6 +139,19 @@ Or, if you want to generate the documentation and open it in your browser, type:
 mix docs --open
 ```
 
+## Debugging
+Since Elixir has excellent debugging tools (thanks to the Erlang ecosystem), I thought I would be interesting to demonstrate how to use the `observer`. As you might have noticed, in this video, I am running this project inside a docker container.
+
+Due to one of Elixir's core-values (distributed systems), we can easily connect to remote notes and debug them while they are running.
+
+The following demonstration shows how to launch an Elixir `remote session`. Make sure you replace `thynkon` with your username when typing the following command:
+```sh
+iex --name thynkon@172.40.0.1 --cookie business_intelligence
+```
+
+https://user-images.githubusercontent.com/35641748/207707176-2dd2acad-15be-4d5c-94a0-8c6912b9ed16.mp4
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
