@@ -34,8 +34,9 @@
 
 <!-- GETTING STARTED -->
 ## Getting Started
+This is microservice written in Elixir whose purpose is to `AWS S3` as a data source to perform some techniques related to `Business Intelligence`.
+
 Since this project is written in Elixir, you will need to install the BEAM.
-You may also need to launch a container for the PostgreSQL database used to store information about background tasks.
 
 ### Prerequisites
 #### Erlang + Elixir
@@ -134,7 +135,7 @@ Or, if you only want to run a specific test
 MIX_ENV=test mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
 ```
 
-## Docs
+## Documentation
 The documentation of this project can be genrated by [ExDoc](https://github.com/elixir-lang/ex_doc).
 ```sh
 mix docs
@@ -157,6 +158,31 @@ iex --name thynkon@172.40.0.1 --cookie business_intelligence
 
 https://user-images.githubusercontent.com/35641748/207707176-2dd2acad-15be-4d5c-94a0-8c6912b9ed16.mp4
 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+## License
+Distributed under the MIT License. See `LICENSE` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+## Contact
+- [Thynkon](https://github.com/Thynkon)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
