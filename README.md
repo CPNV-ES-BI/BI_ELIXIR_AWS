@@ -66,11 +66,17 @@ In can either install Elixir's binaries directly on your machine or you can use 
 
 #### On your machine
 
-1. Elixir dependencies
+1. Install dependencies
    ```sh
    mix deps.get
    ```
-2. Create database and lanch migrations
+
+2. Compile the dependencies
+    ```sh
+    mix deps.compile
+    ```
+   
+3. Create database and lanch migrations
    ```sh
    mix ecto.create
    mix ecto.migrate
@@ -80,7 +86,7 @@ In can either install Elixir's binaries directly on your machine or you can use 
    mix phx.server
    ```
 
-   Or you if want to have a console and execute Elixir code in live:
+   Or you if want to have a console and execute Elixir code in live (just like Ruby on Rails console/irb):
    
    ```sh
    iex -S mix phx.server
