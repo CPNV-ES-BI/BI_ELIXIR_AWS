@@ -10,21 +10,25 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#configuration">Configuration</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#conventions">Conventions</a></li>
-    <li><a href="#current-state">Current state</a></li>
+    <li><a href="#tests">Tests</a></li>
+    <li><a href="#documentation">Documentation</a></li>
+    <li><a href="#debugging">Debugging</a></li>
     <li><a href="#license">License</a></li>
   </ol>
 </details>
 
 ### Built With
 
-* [Elixir - 1.14][elixir-url]
-* [Phoenix - 1.6.14][phoenix-url]
-* [Oban - 2.13.4][oban-url]
-* [SQLite - 3][sqlite-url]
+* [Elixir][elixir-url]
+* [Phoenix][phoenix-url]
+* [SQLite][sqlite-url]
+* [Docker][oban-url]
+* [Espec][espec-url]
+* [ExAWS][exaws-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -44,7 +48,22 @@ You may also need to launch a container for the PostgreSQL database used to stor
   pacman -S erlang elixir
   ```
 
+### Configuration
+In able to communicate with `AWS` servers, you have to define your credentials in a `.env` file.
+
+1. Copy the example file
+    ```sh
+    cp .env.example .env
+    ```
+
+2. Open the `.env` with your favorite text editor and save your credentials
+    ```sh
+    vim .env
+    ```
+
 ### Installation
+In can either install Elixir's binaries directly on your machine or you can use a docker container that provides an already configured development environment.
+
 #### On your machine
 
 1. Elixir dependencies
@@ -77,7 +96,8 @@ You may also need to launch a container for the PostgreSQL database used to stor
    ```sh
    docker-compose up -d
    ```
-   This will open two ports: `4000` and `4369`
+   This will open two ports: `4000` and `4369`. The later is used by [the observer](https://elixir-lang.org/getting-started/debugging.html#observer). This tool allows to connect to a remote Elixir Node and watch the running processes (this is one of the reasons why Elixir is a perfect solution for distributed systems). 
+
 6. Finally, launch the web server
    ```sh
    mix phx.server
@@ -91,21 +111,21 @@ You may also need to launch a container for the PostgreSQL database used to stor
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Tests
+## Tests
 In order to run all tests type:
 
 ```sh
-MIX_ENV=test mix test
+MIX_ENV=test mix espec
 ```
 
 If you want to run all tests of a file
 ```sh
-MIX_ENV=test mix test ./test/<FILE_TEST>.exs
+MIX_ENV=test mix espec ./spec/<FILE_TEST>.exs
 ```
 
 Or, if you only want to run a specific test
 ```sh
-MIX_ENV=test mix test ./test/<FILE_TEST>.exs:<LINE_NUMBER>
+MIX_ENV=test mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
 ```
 
 ## Docs
@@ -119,6 +139,7 @@ Or, if you want to generate the documentation and open it in your browser, type:
 mix docs --open
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -128,3 +149,5 @@ mix docs --open
 [postgresql-url]: https://www.postgresql.org
 [oban-url]: https://github.com/sorentwo/oban
 [bootstrap-url]: https://getbootstrap.com
+[exaws-url]: https://github.com/ex-aws/ex_aws
+[espec-url]: https://github.com/antonmi/espec
