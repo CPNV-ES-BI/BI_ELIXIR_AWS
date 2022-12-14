@@ -146,6 +146,9 @@ Or, if you want to generate the documentation and open it in your browser, type:
 mix docs --open
 ```
 
+## Directory structure
+Just like most web applications written in Elixir, this project follows the `directory structure` defined for [Phoenix][phoenix-url]. [The excellent official documentation](https://hexdocs.pm/phoenix/directory_structure.html) explains in great detail the purpose of each directory.
+
 ## Debugging
 Since Elixir has excellent debugging tools (thanks to the Erlang ecosystem), I thought I would be interesting to demonstrate how to use the `observer`. As you might have noticed, in this video, I am running this project inside a docker container.
 
