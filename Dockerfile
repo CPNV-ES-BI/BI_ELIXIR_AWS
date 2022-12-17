@@ -54,6 +54,8 @@ COPY test test
 
 COPY deps deps
 
+COPY .env .env
+
 # Compile the release
 RUN mix compile
 
