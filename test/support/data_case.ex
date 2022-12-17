@@ -18,12 +18,13 @@ defmodule BusinessIntelligence.DataCase do
 
   using do
     quote do
-      alias BusinessIntelligence.Repo
-
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
       import BusinessIntelligence.DataCase
+
+      alias BusinessIntelligence.Repo
+      alias Ecto.Adapters
     end
   end
 
@@ -36,10 +37,9 @@ defmodule BusinessIntelligence.DataCase do
   Sets up the sandbox based on the test tags.
   """
   def setup_sandbox(tags) do
-    pid =
-      Ecto.Adapters.SQL.Sandbox.start_owner!(BusinessIntelligence.Repo, shared: not tags[:async])
+    pid = SQL.Sandbox.start_owner!(BusinessIntelligence.Repo, shared: not tags[:async])
 
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+    on_exit(fn -> SQL.Sandbox.stop_owner(pid) end)
   end
 
   @doc """

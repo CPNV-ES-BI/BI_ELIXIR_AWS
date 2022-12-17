@@ -10,7 +10,15 @@ defmodule BusinessIntelligence.MixProject do
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls, test_task: "espec"],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+      dialyzer: [plt_add_deps: :transitive]
     ]
   end
 
@@ -49,7 +57,12 @@ defmodule BusinessIntelligence.MixProject do
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
       {:dotenv_parser, "~> 2.0"},
-      {:espec, "~> 1.9.0", only: :test}
+      {:espec, "~> 1.9.0", only: :test},
+      {:excoveralls, "~> 0.10", only: :test},
+      {:espec_phoenix, "~> 0.8.2", only: :test},
+      {:git_hooks, "~> 0.4.0", only: [:test, :dev], runtime: false},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 

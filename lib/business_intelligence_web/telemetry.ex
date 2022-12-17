@@ -1,4 +1,7 @@
 defmodule BusinessIntelligenceWeb.Telemetry do
+  @moduledoc """
+  Logger module
+  """
   use Supervisor
   import Telemetry.Metrics
 

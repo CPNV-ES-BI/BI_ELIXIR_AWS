@@ -1,11 +1,20 @@
 defmodule BusinessIntelligence.DataObject do
   require Logger
 
-  def bucket(), do: System.fetch_env!("AWS_BUCKET")
+  @moduledoc """
+  A simple AWS client that performs some actions on dataobjects.
+  """
+
+  def bucket, do: System.fetch_env!("AWS_BUCKET")
 
   @spec create(<<_::40, _::_*8>>) :: {:error, :already_exists} | {:ok, %{}}
   def create(name, content \\ "") do
-    if not exists?(name) do
+    if exists?(name) do
+      Logger.warn("#{name} already exists")
+      {:error, :already_exists}
+    else
+      Logger.warn("#{name} already exists")
+      {:error, :already_exists}
       result = ExAws.S3.put_object(bucket(), name, content) |> ExAws.request()
 
       case result do
@@ -21,9 +30,6 @@ defmodule BusinessIntelligence.DataObject do
           Logger.error("Unexpected response from AWS")
           {:error, :unexpected_response}
       end
-    else
-      Logger.warn("#{name} already exists")
-      {:error, :already_exists}
     end
   end
 
