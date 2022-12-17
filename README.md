@@ -50,17 +50,25 @@ Since this project is written in Elixir, you will need to install the BEAM.
   ```
 
 ### Configuration
-In able to communicate with `AWS` servers, you have to define your credentials in a `.env` file.
+In able to communicate with `AWS` servers, you have to store your credentials in environment variables.
 
-1. Copy the example file
-    ```sh
-    cp .env.example .env
-    ```
+Make sure the following environment variables are set:
+  - `AWS_ACCESS_KEY_ID`
+  - `AWS_SECRET_ACCESS_KEY`
+  - `AWS_BUCKET`
 
-2. Open the `.env` with your favorite text editor and save your credentials
-    ```sh
-    vim .env
-    ```
+If you intend to run this project in a docker container, you have to define those credentials in the `docker-compose.yml` file.
+
+```sh
+cp docker-compose.yml.example docker-compose.yml
+```
+Then, assign your credentials to these variables:
+```yml
+environment:
+  - AWS_ACCESS_KEY_ID=
+  - AWS_SECRET_ACCESS_KEY=
+  - AWS_BUCKET=
+```
 
 ### Installation
 In can either install Elixir's binaries directly on your machine or you can use a docker container that provides an already configured development environment.
@@ -82,7 +90,7 @@ In can either install Elixir's binaries directly on your machine or you can use 
    mix ecto.create
    mix ecto.migrate
    ```
-6. Finally, launch the web server
+4. Finally, launch the web server
    ```sh
    mix phx.server
    ```
@@ -105,20 +113,10 @@ In can either install Elixir's binaries directly on your machine or you can use 
    ```
    This will open two ports: `4000` and `4369`. The later is used by [the observer](https://elixir-lang.org/getting-started/debugging.html#observer). This tool allows to connect to a remote Elixir Node and watch the running processes (this is one of the reasons why Elixir is a perfect solution for distributed systems). 
 
-6. Finally, launch the web server
-   ```sh
-   mix phx.server
-   ```
-
-   Or you if want to have a console and execute Elixir code in live:
-   
-   ```sh
-   iex -S mix phx.server
-   ```
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Tests
+### On your machine
 In order to run all tests type:
 
 ```sh
@@ -133,6 +131,23 @@ MIX_ENV=test mix espec ./spec/<FILE_TEST>.exs
 Or, if you only want to run a specific test
 ```sh
 MIX_ENV=test mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
+```
+
+### On the container
+In order to run all tests type:
+
+```sh
+docker exec -e MIX_ENV=test business_intelligence mix espec
+```
+
+If you want to run all tests of a file
+```sh
+docker exec -e MIX_ENV=test business_intelligence mix espec ./spec/<FILE_TEST>.exs
+```
+
+Or, if you only want to run a specific test
+```sh
+docker exec -e MIX_ENV=test business_intelligence mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
 ```
 
 ## Documentation

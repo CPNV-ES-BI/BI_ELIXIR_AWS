@@ -30,4 +30,4 @@ business_intelligence-*.tar
 .elixir_ls/*
 
 # Credentials
-.env
+docker-compose.yml
