@@ -38,5 +38,13 @@ jobs:
       run: mix deps.get
     - name: Compile dependencies
       run: mix deps.compile
+    - name: Compile project
+      run: mix compile --warnings-as-error
+    - name: Check code format
+      run: mix format --check-formatted
+    - name: Run static code analysis (community good practices)
+      run: mix credo --strict
+    - name: Run static code analysis (software discrepancies, type errors...)
+      run: mix dialyzer
     - name: Run tests
       run: mix espec
