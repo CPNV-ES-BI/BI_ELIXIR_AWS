@@ -9,6 +9,10 @@ services:
         ipv4_address: 172.40.0.2
     ports:
       - "4000:4000"
+    environment:
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_BUCKET=
     volumes:
       - .:/app
     command: elixir --name docker@172.40.0.2 --cookie business_intelligence -S mix phx.server
