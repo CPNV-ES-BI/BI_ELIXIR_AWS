@@ -1,7 +1,7 @@
 # EasyVault
 <a name="readme-top"></a>
 <details>
-  <summary>Table of Contents</summary>
+  <summary>Table of Content</summary>
   <ol>
     <li>
         <a href="#built-with">Built With</a>
