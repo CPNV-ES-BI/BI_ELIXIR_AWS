@@ -61,7 +61,7 @@ defmodule BusinessIntelligence.MixProject do
       {:espec_phoenix, "~> 0.8.2", only: :test},
       {:git_hooks, "~> 0.4.0", only: [:test, :dev], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 
