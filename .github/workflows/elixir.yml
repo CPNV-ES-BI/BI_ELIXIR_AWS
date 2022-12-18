@@ -5,10 +5,12 @@ on:
     branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
-    
+
 env:
   MIX_ENV: test
-  ImageOS: ubuntu20
+  AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 permissions:
   contents: read
@@ -22,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up Elixir
-      uses: erlef/setup-beam@988e02bfe678367a02564f65ca2e37726dc0268f
+      uses: erlef/setup-beam@b980a5ac9b7316a23ebc16de2bb69b7c3ad731b5
       with:
         elixir-version: '1.14.2' # Define the elixir version [required]
         otp-version: '25.0' # Define the OTP version [required]
@@ -34,5 +36,15 @@ jobs:
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
+    - name: Compile dependencies
+      run: mix deps.compile
+    - name: Compile project
+      run: mix compile --warnings-as-error
+    - name: Check code format
+      run: mix format --check-formatted
+    - name: Run static code analysis (community good practices)
+      run: mix credo --strict
+    - name: Run static code analysis (software discrepancies, type errors...)
+      run: mix dialyzer
     - name: Run tests
       run: mix espec
