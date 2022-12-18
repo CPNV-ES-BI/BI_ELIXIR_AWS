@@ -13,6 +13,7 @@ defmodule BusinessIntelligence.MixProject do
       deps: deps(),
       test_coverage: [tool: ExCoveralls, test_task: "espec"],
       preferred_cli_env: [
+        espec: :test,
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
@@ -57,11 +58,11 @@ defmodule BusinessIntelligence.MixProject do
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
       {:espec, "~> 1.9.0", only: :test},
-      {:excoveralls, "~> 0.10", only: :test},
       {:espec_phoenix, "~> 0.8.2", only: :test},
+      {:excoveralls, "~> 0.10", only: :test},
       {:git_hooks, "~> 0.4.0", only: [:test, :dev], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
     ]
   end
 

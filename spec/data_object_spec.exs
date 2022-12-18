@@ -34,7 +34,6 @@ defmodule DataObjectSpec do
       # When
       upload_empty_file(existing_file)
       status = DataObject.exists?(existing_file)
-      IO.puts(inspect(status))
 
       # Then
       expect(status) |> to(eq(true))
@@ -73,7 +72,7 @@ defmodule DataObjectSpec do
       status = DataObject.exists?(existing_file)
 
       # Then
-      assert {:ok, object} = result
+      assert {:ok, _object} = result
       assert status == true
     end
 
@@ -96,7 +95,7 @@ defmodule DataObjectSpec do
       result = DataObject.create(name)
 
       # Then
-      assert {:ok, object} = result
+      assert {:ok, _object} = result
     end
 
     finally do
