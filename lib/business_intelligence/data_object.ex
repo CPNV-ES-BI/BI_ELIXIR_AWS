@@ -20,13 +20,12 @@ defmodule BusinessIntelligence.DataObject do
           Logger.info("File #{name} successfully created")
           {:ok, %{}}
 
-        {:error, %{status_code: 404}} ->
-          Logger.error("File #{name} does not exist")
-          false
-
+        # Cannot reproduce this error during tests as they rely on AWS infrastructure problems
+        # coveralls-ignore-start
         _ ->
           Logger.error("Unexpected response from AWS")
           {:error, :unexpected_response}
+          # coveralls-ignore-stop
       end
     end
   end
@@ -48,9 +47,12 @@ defmodule BusinessIntelligence.DataObject do
         Logger.error("File #{name} does not exist")
         false
 
+      # Cannot reproduce this error during tests as they rely on AWS infrastructure problems
+      # coveralls-ignore-start
       _ ->
         Logger.error("Unexpected response from AWS - exists?()")
         false
+        # coveralls-ignore-stop
     end
   end
 
@@ -67,9 +69,12 @@ defmodule BusinessIntelligence.DataObject do
         Logger.error("File #{name} does not exist - download")
         {:error, :object_not_found}
 
+      # Cannot reproduce this error during tests as they rely on AWS infrastructure problems
+      # coveralls-ignore-start
       _ ->
         Logger.error("Unexpected response from AWS - download()")
         {:error, :unexpected_response}
+        # coveralls-ignore-stop
     end
   end
 

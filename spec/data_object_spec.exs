@@ -146,7 +146,7 @@ defmodule DataObjectSpec do
       DataObject.create("#{@publish_dir}/EXISTING_FILE.txt", "Some content")
     end
 
-    it "DownloadObject_NominalCase_Downloaded" do
+    it "PublishObject_NominalCase_ObjectPublished" do
       # Given
       existing_file = "#{@publish_dir}/EXISTING_FILE.txt"
 
@@ -157,7 +157,7 @@ defmodule DataObjectSpec do
       assert {:ok, _object} = status
     end
 
-    it "DownloadObject_NotExists_ThrowException" do
+    it "PublishObject_ObjectNotFound_ThrowException" do
       # Given
       non_existing_file = "#{@publish_dir}/NON_EXISTING_FILE.txt"
 
