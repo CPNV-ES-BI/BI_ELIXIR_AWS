@@ -105,7 +105,7 @@ In can either install Elixir's binaries directly on your machine or you can use 
 
 1. Build docker's image
    ```sh
-   docker build -t business_intelligence .
+   docker-compose build
    ```
 2. Launch the container using `docker-compose`
    ```sh
@@ -133,21 +133,31 @@ Or, if you only want to run a specific test
 MIX_ENV=test mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
 ```
 
+If you want to generate a `test coverage` report, type the following:
+```sh
+MIX_ENV=test mix coveralls.html
+```
+
 ### On the container
 In order to run all tests type:
 
 ```sh
-docker exec -e MIX_ENV=test business_intelligence mix espec
+docker-compose exec -e MIX_ENV=test app mix espec
 ```
 
 If you want to run all tests of a file
 ```sh
-docker exec -e MIX_ENV=test business_intelligence mix espec ./spec/<FILE_TEST>.exs
+docker-compose exec -e MIX_ENV=test app mix espec ./spec/<FILE_TEST>.exs
 ```
 
 Or, if you only want to run a specific test
 ```sh
-docker exec -e MIX_ENV=test business_intelligence mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
+docker-compose exec -e MIX_ENV=test app mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
+```
+
+If you want to generate a `test coverage` report, type the following:
+```sh
+docker-compose exec -e MIX_ENV=test app mix coveralls.html
 ```
 
 ## Documentation
@@ -163,6 +173,10 @@ mix docs --open
 
 ## Directory structure
 Just like most web applications written in Elixir, this project follows the `directory structure` defined for [Phoenix][phoenix-url]. [The excellent official documentation](https://hexdocs.pm/phoenix/directory_structure.html) explains in great detail the purpose of each directory.
+
+The unit tests (BDD) can be found under the `spec/` directory.
+
+And, both class (even though Elixir is a functional language and does not have classes) and sequence diagrams can be found under the `docs/`.
 
 ## Debugging
 Since Elixir has excellent debugging tools (thanks to the Erlang ecosystem), I thought I would be interesting to demonstrate how to use the `observer`. As you might have noticed, in this video, I am running this project inside a docker container.

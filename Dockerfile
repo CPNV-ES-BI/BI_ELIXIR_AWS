@@ -25,46 +25,16 @@ FROM ${BUILDER_IMAGE} as builder
 RUN apt-get update -y && apt-get install -y build-essential git curl vim bash watchman procps iproute2 lsof\
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-# prepare build dir
-WORKDIR /app
-
 # install hex + rebar
 RUN mix local.hex --force && \
     mix local.rebar --force
 
-# set build ENV
+# prepare build dir
+ENV APP_HOME /app
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+
 ENV MIX_ENV="dev"
-
-# install mix dependencies
-COPY mix.exs mix.lock ./
-RUN mix deps.get
-RUN mkdir config
-
-# copy compile-time config files before we compile dependencies
-# to ensure any relevant config change will trigger the dependencies
-# to be re-compiled.
-COPY config/config.exs config/${MIX_ENV}.exs config/
-RUN mix deps.compile
-
-COPY priv priv
-
-COPY lib lib
-
-COPY test test
-
-COPY deps deps
-
-# Compile the release
-RUN mix compile
-
-
-# Changes to config/runtime.exs don't require recompiling the code
-COPY config/runtime.exs config/
-
-# Compile the release
-RUN mix compile
 
 EXPOSE 4000
 EXPOSE 4369
-
-CMD ["iex", "--name", "docker@172.40.0.2", "--cookie", "business_intelligence", "-S", "mix", "phx.server"]

@@ -14,8 +14,11 @@ services:
       - AWS_SECRET_ACCESS_KEY=
       - AWS_BUCKET=
     volumes:
-      - .:/app
-    command: elixir --name docker@172.40.0.2 --cookie business_intelligence -S mix phx.server
+      - type: bind
+        source: .
+        target: /app
+    command:
+      - "./entrypoint.sh"
 
 networks:
   phoenix:
