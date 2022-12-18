@@ -1,15 +1,22 @@
-@startuml
+@startuml DataObject
 skinparam classAttributeIconSize 0
 class DataObject {
- +exists?(config)
- +create(config)
- +download(config)
- +publish!(config)
+ -bucket: String
+
+ +exists(name: String): Boolean
+ +create(name: String): String
+ +download(name: String): String
+ +publish(name: String): String
 }
 
-class CloudConfig {
- +credentials()
- +host()
-}
+class Exception
+class ObjectNotFound
+class UnexpectedResponse
+
+Exception <|-- ObjectNotFound
+Exception <|-- UnexpectedResponse
+
+ObjectNotFound <.. DataObject: Throws
+UnexpectedResponse <.. DataObject: Throws
 
 @enduml
