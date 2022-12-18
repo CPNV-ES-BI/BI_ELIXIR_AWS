@@ -6,6 +6,7 @@ defmodule DataObjectSpec do
 
   @exist_dir "exist"
   @upload_dir "upload"
+  @download_dir "download"
 
   def upload_empty_file(name) do
     ExAws.S3.put_object(DataObject.bucket(), name, "") |> ExAws.request()
@@ -101,6 +102,40 @@ defmodule DataObjectSpec do
     finally do
       Logger.info("Deleting all files in #{@upload_dir}")
       delete_all_objects(@upload_dir, DataObject.bucket())
+    end
+  end
+
+  describe "Upload and download files" do
+    before do
+      delete_all_objects(@download_dir, DataObject.bucket())
+      DataObject.create("#{@download_dir}/EXISTING_FILE.txt", "Some content")
+    end
+
+    it "DownloadObject_NominalCase_Downloaded" do
+      # Given
+      existing_file = "#{@download_dir}/EXISTING_FILE.txt"
+
+      # When
+      status = DataObject.download(existing_file)
+
+      # Then
+      assert {:ok, _object} = status
+    end
+
+    it "DownloadObject_NotExists_ThrowException" do
+      # Given
+      non_existing_file = "#{@download_dir}/NON_EXISTING_FILE.txt"
+
+      # When
+      status = DataObject.download(non_existing_file)
+
+      # Then
+      assert {:error, :object_not_found} = status
+    end
+
+    finally do
+      Logger.info("Deleting all files in #{@download_dir}")
+      delete_all_objects(@download_dir, DataObject.bucket())
     end
   end
 end

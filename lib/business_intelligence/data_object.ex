@@ -13,8 +13,6 @@ defmodule BusinessIntelligence.DataObject do
       Logger.warn("#{name} already exists")
       {:error, :already_exists}
     else
-      Logger.warn("#{name} already exists")
-      {:error, :already_exists}
       result = ExAws.S3.put_object(bucket(), name, content) |> ExAws.request()
 
       case result do
@@ -56,12 +54,22 @@ defmodule BusinessIntelligence.DataObject do
     end
   end
 
-  @spec download(any) :: {:error, :object_not_found} | {:ok, %{}}
+  @spec download(binary) :: {:error, :object_not_found | :unexpected_response} | {:ok, any}
   def download(name) do
-    if name == "found" do
-      {:ok, %{}}
-    else
-      {:error, :object_not_found}
+    result = ExAws.S3.get_object(bucket(), name) |> ExAws.request()
+
+    case result do
+      {:ok, %{body: body, status_code: 200}} ->
+        Logger.info("File #{name} downloaded")
+        {:ok, body}
+
+      {:error, {:http_error, _, %{status_code: 404}}} ->
+        Logger.error("File #{name} does not exist - download")
+        {:error, :object_not_found}
+
+      _ ->
+        Logger.error("Unexpected response from AWS - download()")
+        {:error, :unexpected_response}
     end
   end
 
