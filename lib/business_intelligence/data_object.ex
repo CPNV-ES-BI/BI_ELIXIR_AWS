@@ -73,9 +73,13 @@ defmodule BusinessIntelligence.DataObject do
     end
   end
 
-  def publish!(name) do
-    if name == "found" do
-      {:ok, %{}}
+  def publish(name) do
+    if exists?(name) do
+      {:ok, url} =
+        ExAws.Config.new(:s3)
+        |> ExAws.S3.presigned_url(:get_object, bucket(), name, expires_in: 3600)
+
+      {:ok, url}
     else
       {:error, :object_not_found}
     end
