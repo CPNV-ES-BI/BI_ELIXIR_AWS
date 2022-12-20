@@ -1,4 +1,4 @@
-# EasyVault
+# BI_AWS_ELIXIR
 <a name="readme-top"></a>
 <details>
   <summary>Table of Contents</summary>
@@ -39,7 +39,7 @@ This is microservice written in Elixir whose purpose is to `AWS S3` as a data so
 Since this project is written in Elixir, you will need to install the BEAM.
 
 ### Prerequisites
-#### Erlang + Elixir
+#### Erlang + Elixir 1.14.2 / OTP 25
 - macOS
   ```sh
   brew install erlang elixir
@@ -48,6 +48,17 @@ Since this project is written in Elixir, you will need to install the BEAM.
   ```sh
   pacman -S erlang elixir
   ```
+
+- Windows
+
+  Checkout [Elixir's documentation](https://elixir-lang.org/install.html#windows)
+
+
+Note that by installing Elixir's runtime, you will be able to use both `mix` (package management/build tool) and `iex` (interactive Elixir shell).
+
+They both have the same version as the Elixir's compiler since they are part of Elixir's core. `Unlike Python, Javascript` or other programming languages, the package management tool **is not a external tool that can be updaded individually**.
+
+`mix` are to Elixir what `cargo` is to `Rust` and `go` is to `Go`.
 
 ### Configuration
 In able to communicate with `AWS` servers, you have to store your credentials in environment variables.
