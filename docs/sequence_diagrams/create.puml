@@ -1,0 +1,15 @@
+@startuml DataObject_Create
+
+actor User
+
+participant "BI_AWS_ELIXIR" as App
+participant "AWS S3" as S3
+
+User -> App: start application
+User -> App: enter file name
+User -> App: enter file content
+App -> S3: create object with specified file name and content
+S3 -> App: return object
+App -> User: display object
+
+@enduml
