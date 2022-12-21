@@ -215,6 +215,42 @@ Contributions are what make the open source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+To give you a better idea of what this project looks like, here the output of `tree -f`.
+
+<pre>
+.
+├── ./config
+│   ├── ./config/config.exs       // Define application variables before compilation
+│   ├── ./config/dev.exs          // Development configuration
+│   ├── ./config/prod.exs         // Prod configuration
+│   ├── ./config/runtime.exs      // Define application variables after compilation (load environment variables)
+│   └── ./config/test.exs         // Test configuration
+├── ./docker-compose.yml.example
+├── ./Dockerfile
+├── ./docs                        // UML diagrams
+│   ├── ./docs/class_diagrams
+│   └── ./docs/sequence_diagrams
+├── ./entrypoint.sh
+├── ./lib
+│   ├── ./lib/business_intelligence      // Files related to business logic (models)
+│   ├── ./lib/business_intelligence_web  // Files related to the web application (controllers, views)
+│   │   ├── ./lib/business_intelligence_web/controllers
+│   │   └── ./lib/business_intelligence_web/views
+├── ./LICENSE
+├── ./mix.exs
+├── ./mix.lock
+├── ./priv
+│   ├── ./priv/gettext               // Translation
+│   └── ./priv/repo                  // Migrations, seeders
+│       ├── ./priv/repo/migrations
+│       └── ./priv/repo/seeds.exs
+├── ./README.md
+└── ./spec                           // BDD test
+</pre>
+
+If you want to better understand the difference between `config.exs` and `runtime.exs`, take a look at [Elixir's documentation](https://elixir-lang.org/getting-started/mix-otp/config-and-releases.html#configuration).
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- LICENSE -->
