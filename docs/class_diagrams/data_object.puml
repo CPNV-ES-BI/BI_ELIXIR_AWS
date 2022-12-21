@@ -1,22 +1,32 @@
 @startuml DataObject
 skinparam classAttributeIconSize 0
-class DataObject {
- -bucket: String
+package BusinessIntelligence {
+    interface CloudClient {
+     +exists(name: String): Boolean
+     +create(name: String): File
+     +download(name: String): File
+     +publish(name: String): String
+    }
 
- +exists(name: String): Boolean
- +create(name: String): String
- +download(name: String): String
- +publish(name: String): String
+    class DataObject {
+     -bucket: String
+    }
+
+    class Exception
+    class ObjectNotFound
+    class UnexpectedResponse
+
+    CloudClient <|.. DataObject
+
+    Exception <|-- ObjectNotFound
+    Exception <|-- UnexpectedResponse
+
+    DataObject ..> ObjectNotFound: Throw
+    DataObject ..> UnexpectedResponse: Throw
 }
 
-class Exception
-class ObjectNotFound
-class UnexpectedResponse
+package AmazonSDK {}
 
-Exception <|-- ObjectNotFound
-Exception <|-- UnexpectedResponse
-
-ObjectNotFound <.. DataObject: Throws
-UnexpectedResponse <.. DataObject: Throws
+BusinessIntelligence ..> AmazonSDK: Imports
 
 @enduml
