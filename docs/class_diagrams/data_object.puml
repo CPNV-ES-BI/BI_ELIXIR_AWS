@@ -6,6 +6,7 @@ package BusinessIntelligence {
      +create(name: String): File
      +download(name: String): File
      +publish(name: String): String
+     +delete(name: String, recursive: Boolean): File
     }
 
     class DataObject {

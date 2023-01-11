@@ -8,6 +8,7 @@ defmodule DataObjectSpec do
   @upload_dir "upload"
   @download_dir "download"
   @publish_dir "publish"
+  @delete_dir "delete"
 
   def upload_empty_file(name) do
     ExAws.S3.put_object(DataObject.bucket(), name, "") |> ExAws.request()
@@ -171,6 +172,66 @@ defmodule DataObjectSpec do
     finally do
       Logger.info("Deleting all files in #{@publish_dir}")
       delete_all_objects(@publish_dir, DataObject.bucket())
+    end
+  end
+
+  describe "Upload and delete files" do
+    before do
+      delete_all_objects(@delete_dir, DataObject.bucket())
+    end
+
+    it "DeleteObject_ObjectExists_ObjectDeleted" do
+      # Given
+      existing_file = "#{@delete_dir}/EXISTING_FILE.txt"
+      {:ok, _file} = DataObject.create(existing_file)
+
+      # When
+      status = DataObject.delete(existing_file)
+
+      # Then
+      assert {:ok, [existing_file]} = status
+    end
+
+    it "DeleteObject_ObjectContainingSubObjectsExists_ObjectDeletedRecursively" do
+      # Given
+      existing_file_1 = "#{@delete_dir}/EXISTING_FILE_1.txt"
+      existing_file_2 = "#{@delete_dir}/EXISTING_FILE_2.txt"
+      {:ok, _file_1} = DataObject.create(existing_file_1)
+      {:ok, _file_2} = DataObject.create(existing_file_2)
+
+      # When
+      status = DataObject.delete("#{@delete_dir}", recursive: true)
+
+      # Then
+      assert {:ok, files} = status
+      expect Enum.count(files) |> to(be :>, 1)
+    end
+
+    it "DeleteObject_ObjectDoesntExist_ThrowException" do
+      # Given
+      non_existing_file = "#{@delete_dir}/NON_EXISTING_FILE.txt"
+
+      # When
+      status = DataObject.delete(non_existing_file)
+
+      # Then
+      assert {:error, :object_not_found} = status
+    end
+
+    it "DeleteObject_ObjectDoesntExistRecursively_ThrowException" do
+      # Given
+      non_existing_file = "#{@delete_dir}/NON_EXISTING_FILE.txt"
+
+      # When
+      status = DataObject.delete(non_existing_file, recursive: true)
+
+      # Then
+      assert {:error, :object_not_found} = status
+    end
+
+    finally do
+      Logger.info("Deleting all files in #{@delete_dir}")
+      delete_all_objects(@delete_dir, DataObject.bucket())
     end
   end
 end

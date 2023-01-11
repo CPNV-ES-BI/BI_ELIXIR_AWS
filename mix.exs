@@ -56,6 +56,7 @@ defmodule BusinessIntelligence.MixProject do
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
+      {:httpoison, "~> 1.8"},
       {:sweet_xml, "~> 0.6"},
       {:espec, "~> 1.9.0", only: :test},
       {:espec_phoenix, "~> 0.8.2", only: :test},

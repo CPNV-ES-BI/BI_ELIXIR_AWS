@@ -1,5 +1,6 @@
 defmodule BusinessIntelligence.DataObject do
   require Logger
+  import SweetXml
 
   @moduledoc """
   A simple AWS client that performs some actions on dataobjects.
@@ -87,6 +88,55 @@ defmodule BusinessIntelligence.DataObject do
       {:ok, url}
     else
       {:error, :object_not_found}
+    end
+  end
+
+  def delete(name, recusive \\ false) do
+    stream =
+      ExAws.S3.list_objects(
+        bucket(),
+        prefix: "#{name}"
+      )
+      |> ExAws.stream!()
+      |> Stream.map(& &1.key)
+
+    # Fetch only the object that matches the name
+    # if recusive is set to true
+    stream =
+      if recusive do
+        stream
+      else
+        stream
+        |> Enum.filter(fn file -> file == name end)
+      end
+
+    number_of_objects = stream |> Enum.count()
+
+    if number_of_objects <= 0 do
+      {:error, :object_not_found}
+    else
+      result =
+        ExAws.S3.delete_all_objects(bucket(), stream)
+        |> ExAws.request()
+
+      case result do
+        {:ok, [%{body: body, status_code: 200}]} ->
+          # For some reason, I receive an XML string instead of a JSON one
+          parsed_xml = parse(body)
+          deleted_files = parsed_xml |> SweetXml.xpath(~x"//DeleteResult/Deleted/Key/text()"l)
+          {:ok, deleted_files}
+
+        {:error, {:http_error, _, %{status_code: 404}}} ->
+          Logger.error("File #{name} does not exist - delete")
+          {:error, :object_not_found}
+
+        # Cannot reproduce this error during tests as they rely on AWS infrastructure problems
+        # coveralls-ignore-start
+        _ ->
+          Logger.error("Unexpected response from AWS - delete()")
+          {:error, :unexpected_response}
+          # coveralls-ignore-stop
+      end
     end
   end
 end
