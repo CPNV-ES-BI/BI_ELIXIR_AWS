@@ -113,6 +113,7 @@ In can either install Elixir's binaries directly on your machine or you can use 
    ```
 
 #### Docker
+##### Development
 
 1. Build docker's image
    ```sh
@@ -123,6 +124,24 @@ In can either install Elixir's binaries directly on your machine or you can use 
    docker-compose up -d
    ```
    This will open two ports: `4000` and `4369`. The later is used by [the observer](https://elixir-lang.org/getting-started/debugging.html#observer). This tool allows to connect to a remote Elixir Node and watch the running processes (this is one of the reasons why Elixir is a perfect solution for distributed systems). 
+
+##### Production
+Production docker image can be found under `container/`.
+
+Rename `docker-compose.yml.example` to `docker-compose.yml` and set the environment variables.
+
+**NOTE**: `SECRET_KEY_BASE` should have the string returned from `mix phx.gen.secret`.
+
+1. Build docker's image
+   ```sh
+   docker-compose build
+   ```
+2. Launch the container using `docker-compose`
+   ```sh
+   docker-compose up -d
+   ```
+
+Just like the development container, the production one exposes both `4000` and `4369` ports.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -225,6 +244,7 @@ To give you a better idea of what this project looks like, here the output of `t
 │   ├── ./config/prod.exs         // Prod configuration
 │   ├── ./config/runtime.exs      // Define application variables after compilation (load environment variables)
 │   └── ./config/test.exs         // Test configuration
+├── ./containers                  // Production containers
 ├── ./docker-compose.yml.example
 ├── ./Dockerfile
 ├── ./docs                        // UML diagrams

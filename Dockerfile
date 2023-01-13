@@ -36,5 +36,6 @@ WORKDIR $APP_HOME
 
 ENV MIX_ENV="dev"
 
-EXPOSE 4000
+# Elixir remote session port
 EXPOSE 4369
+EXPOSE 4000
