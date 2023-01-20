@@ -2,7 +2,9 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
   use BusinessIntelligenceWeb, :controller
   alias BusinessIntelligence.DataObject
 
-  action_fallback BusinessIntelligenceWeb.FallbackController
+  require Logger
+
+  action_fallback(BusinessIntelligenceWeb.FallbackController)
 
   @spec create(any, map) :: {:error, :already_exists | :unexpected_response} | Plug.Conn.t()
   def create(conn, %{"name" => name}) do
@@ -11,15 +13,20 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
     end
   end
 
-  def create(conn, %{"name" => name, "content" => content}) do
-    with :ok <- DataObject.create(name, content) do
+  def create(conn, %{"file" => file}) do
+    content = File.read!(file.path)
+
+    with :ok <- DataObject.create(file.filename, content) do
       render(conn, "create.json")
     end
   end
 
   @spec show(any, map) :: {:error, :object_not_found | :unexpected_response} | Plug.Conn.t()
   def show(conn, %{"name" => name}) do
-    with {:ok, content} <- DataObject.download(name) do
+    content_type = get_req_header(conn, "content-type") |> Enum.at(0)
+    extension = MIME.extensions(content_type) |> Enum.at(0)
+
+    with {:ok, content} <- DataObject.download("#{name}.#{extension}") do
       render(conn, "show.json", data_object: %{name: name, content: content})
     end
   end

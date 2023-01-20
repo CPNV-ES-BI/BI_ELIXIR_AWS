@@ -40,7 +40,11 @@ defmodule BusinessIntelligenceWeb.Router do
 
   scope "/", BusinessIntelligenceWeb do
     pipe_through [:api]
-    resources "/data-object", DataObjectController, only: [:create, :show, :delete], param: "name"
-    put "/data-object/:name/publish", DataObjectController, :publish
+
+    resources "/data-objects", DataObjectController,
+      only: [:create, :show, :delete],
+      param: "name"
+
+    patch "/data-objects/:name/publish", DataObjectController, :publish
   end
 end

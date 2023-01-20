@@ -68,7 +68,8 @@ defmodule BusinessIntelligence.MixProject do
       {:excoveralls, "~> 0.10", only: :test},
       {:git_hooks, "~> 0.4.0", only: [:test, :dev], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:mime, "~> 2.0"}
     ]
   end
 
