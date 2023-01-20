@@ -1,0 +1,55 @@
+@startuml AllDataObjectHelper
+actor Client
+participant "DataObject" as App
+participant "AWS" as AWS
+
+Client -> App: DoesExist
+
+
+App -> AWS: GetObject Request
+AWS -> App: GetObject Response
+alt exception
+App -> Client: false
+else
+App -> Client: true
+Client -> App: CreateObject
+App -> AWS: Create Request
+AWS -> App: Create Response
+App -> Client: PutObject
+
+Client -> App: PublishObject
+App -> AWS: Publish Request
+
+alt exist
+  AWS -> App: Publish Response
+  App -> Client: Public URL
+else
+  AWS -> App: Throw Exception
+  App -> Client: Throw Exception
+end
+
+
+Client -> App: DownloadObject
+App -> AWS: Download Request
+
+alt exist
+AWS -> App: Download Response
+App -> Client: Object
+else
+AWS -> App: Throw Exception
+App -> Client: Throw Exception
+end
+
+Client -> App: DeleteObject
+App -> AWS: Delete Request
+
+alt exist
+AWS -> App: Delete Response
+App -> Client: Object
+else
+AWS -> App: Throw Exception
+App -> Client: Throw Exception
+end
+
+end
+@enduml
