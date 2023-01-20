@@ -37,4 +37,10 @@ defmodule BusinessIntelligenceWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
+  scope "/", BusinessIntelligenceWeb do
+    pipe_through [:api]
+    resources "/data-object", DataObjectController, only: [:create, :show, :delete], param: "name"
+    put "/data-object/:name/publish", DataObjectController, :publish
+  end
 end
