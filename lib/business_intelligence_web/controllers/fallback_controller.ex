@@ -28,4 +28,11 @@ defmodule BusinessIntelligenceWeb.FallbackController do
     |> put_view(BusinessIntelligenceWeb.ErrorView)
     |> render(:"409")
   end
+
+  def call(conn, {:error, :unexpected_response}) do
+    conn
+    |> put_status(:internal_server_error)
+    |> put_view(BusinessIntelligenceWeb.ErrorView)
+    |> render(:"500")
+  end
 end

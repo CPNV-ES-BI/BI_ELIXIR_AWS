@@ -11,6 +11,7 @@ package BusinessIntelligence {
 
     class DataObject {
      -bucket: String
+     -sdkClient: AmazonSDKClient
     }
 
     class Exception

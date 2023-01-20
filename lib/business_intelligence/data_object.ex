@@ -8,10 +8,11 @@ defmodule BusinessIntelligence.DataObject do
 
   def bucket, do: System.fetch_env!("AWS_BUCKET")
 
-  @spec create(<<_::40, _::_*8>>) :: {:error, :already_exists} | {:ok, %{}}
+  @spec create(binary, any) :: :ok | {:error, :already_exists | :unexpected_response}
   def create(name, content \\ "") do
     if exists?(name) do
       Logger.warn("#{name} already exists")
+      Logger.debug("Matching :already_exists")
       {:error, :already_exists}
     else
       result = ExAws.S3.put_object(bucket(), name, content) |> ExAws.request()
