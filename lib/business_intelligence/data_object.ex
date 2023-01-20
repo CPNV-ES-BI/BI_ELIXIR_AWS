@@ -83,7 +83,7 @@ defmodule BusinessIntelligence.DataObject do
     if exists?(name) do
       {:ok, url} =
         ExAws.Config.new(:s3)
-        |> ExAws.S3.presigned_url(:get_object, bucket(), name, expires_in: 3600)
+        |> ExAws.S3.presigned_url(:get, bucket(), name, expires_in: 3600)
 
       {:ok, url}
     else
@@ -113,6 +113,7 @@ defmodule BusinessIntelligence.DataObject do
     number_of_objects = stream |> Enum.count()
 
     if number_of_objects <= 0 do
+      Logger.error("File #{name} does not exist - delete")
       {:error, :object_not_found}
     else
       result =
@@ -127,11 +128,13 @@ defmodule BusinessIntelligence.DataObject do
           {:ok, deleted_files}
 
         {:error, {:http_error, _, %{status_code: 404}}} ->
+          # coveralls-ignore-start
           # In ESpec, you can also test log messages.
           # https://github.com/antonmi/espec#capture_io-and-capture_log
           # For now, we do not want to test them.
           # coveralls-ignore-start
           Logger.error("File #{name} does not exist - delete")
+          # coveralls-ignore-stop
           {:error, :object_not_found}
 
         # Cannot reproduce this error during tests as they rely on AWS infrastructure problems

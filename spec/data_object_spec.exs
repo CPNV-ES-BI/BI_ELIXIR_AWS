@@ -189,7 +189,7 @@ defmodule DataObjectSpec do
       status = DataObject.delete(existing_file)
 
       # Then
-      assert {:ok, [existing_file]} = status
+      assert {:ok, [_existing_file]} = status
     end
 
     it "DeleteObject_ObjectContainingSubObjectsExists_ObjectDeletedRecursively" do
