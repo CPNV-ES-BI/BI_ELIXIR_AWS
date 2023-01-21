@@ -15,7 +15,12 @@
       </ul>
     </li>
     <li><a href="#tests">Tests</a></li>
-    <li><a href="#documentation">Documentation</a></li>
+    <li>
+      <a href="#documentation">Documentation</a>
+      <ul>
+        <li><a href="#api">REST API</a></li>
+      </ul>
+    </li>
     <li><a href="#debugging">Debugging</a></li>
     <li><a href="#license">License</a></li>
   </ol>
@@ -243,6 +248,28 @@ Just like most web applications written in Elixir, this project follows the `dir
 The unit tests (BDD) can be found under the `spec/` directory.
 
 And, both class (even though Elixir is a functional language and does not have classes) and sequence diagrams can be found under the `docs/`.
+
+## API
+
+As this project implements a RESTful API, we implement the [OpenAPI specification](https://swagger.io/specification).
+
+If you want to see the available routes, you can use the `built-in` `Swagger UI` by connecting to the following route: `http://localhost:4000/swaggerui`
+
+Also, if you prefer to generate the specification file (in `JSON`), run the following command:
+
+**On your dev machine**
+
+```sh
+mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
+```
+
+**Inside the container**
+
+```sh
+docker-compose exec mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
+```
+
+This creates a file named `openapi.json` at the project's root.
 
 ## Debugging
 

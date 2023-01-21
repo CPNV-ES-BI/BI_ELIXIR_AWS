@@ -3,10 +3,20 @@ defmodule BusinessIntelligenceWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug OpenApiSpex.Plug.PutApiSpec, module: BusinessIntelligenceWeb.ApiSpec
   end
 
   scope "/api", BusinessIntelligenceWeb do
     pipe_through :api
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "BI_ELIXIR_AWS"
+      }
+    }
   end
 
   # Enables LiveDashboard only for development
@@ -23,6 +33,7 @@ defmodule BusinessIntelligenceWeb.Router do
       pipe_through [:fetch_session, :protect_from_forgery]
 
       live_dashboard "/dashboard", metrics: BusinessIntelligenceWeb.Telemetry
+      get "/swaggerui", OpenApiSpex.Plug.SwaggerUI, path: "/api/openapi"
     end
   end
 
@@ -38,13 +49,15 @@ defmodule BusinessIntelligenceWeb.Router do
     end
   end
 
-  scope "/", BusinessIntelligenceWeb do
+  scope "/api" do
     pipe_through [:api]
 
-    resources "/data-objects", DataObjectController,
+    resources "/data-objects", BusinessIntelligenceWeb.DataObjectController,
       only: [:create, :show, :delete],
       param: "name"
 
-    patch "/data-objects/:name/publish", DataObjectController, :publish
+    patch "/data-objects/:name/publish", BusinessIntelligenceWeb.DataObjectController, :publish
+
+    get "/openapi", OpenApiSpex.Plug.RenderSpec, []
   end
 end

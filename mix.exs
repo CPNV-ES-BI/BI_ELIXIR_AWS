@@ -69,7 +69,8 @@ defmodule BusinessIntelligence.MixProject do
       {:git_hooks, "~> 0.4.0", only: [:test, :dev], runtime: false},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:mime, "~> 2.0"}
+      {:mime, "~> 2.0"},
+      {:open_api_spex, "~> 3.16"}
     ]
   end
 
