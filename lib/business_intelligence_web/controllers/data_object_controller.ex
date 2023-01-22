@@ -1,9 +1,14 @@
 defmodule BusinessIntelligenceWeb.DataObjectController do
   use OpenApiSpex.ControllerSpecs
   use BusinessIntelligenceWeb, :controller
-  alias BusinessIntelligenceWeb.Schemas.PublishResponse
   alias BusinessIntelligence.DataObject
-  alias BusinessIntelligenceWeb.Schemas.{CreateResponse, DownloadResponse, DeleteResponse}
+
+  alias BusinessIntelligenceWeb.Schemas.{
+    CreateResponse,
+    DeleteResponse,
+    DownloadResponse,
+    PublishResponse
+  }
 
   require Logger
 

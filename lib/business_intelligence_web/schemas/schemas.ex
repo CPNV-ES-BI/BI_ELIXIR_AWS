@@ -1,5 +1,8 @@
 defmodule BusinessIntelligenceWeb.Schemas do
   defmodule CreateResponse do
+    @moduledoc """
+    Create Response OpenAPI schema
+    """
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
@@ -14,6 +17,9 @@ defmodule BusinessIntelligenceWeb.Schemas do
   end
 
   defmodule DownloadResponse do
+    @moduledoc """
+    Download Response OpenAPI schema
+    """
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
@@ -25,6 +31,9 @@ defmodule BusinessIntelligenceWeb.Schemas do
   end
 
   defmodule PublishResponse do
+    @moduledoc """
+    Publish Response OpenAPI schema
+    """
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
@@ -40,6 +49,9 @@ defmodule BusinessIntelligenceWeb.Schemas do
   end
 
   defmodule DeleteResponse do
+    @moduledoc """
+    Delete Response OpenAPI schema
+    """
     require OpenApiSpex
 
     OpenApiSpex.schema(%{

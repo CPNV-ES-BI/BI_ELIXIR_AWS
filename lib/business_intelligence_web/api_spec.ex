@@ -1,4 +1,7 @@
 defmodule BusinessIntelligenceWeb.ApiSpec do
+  @moduledoc """
+  API spec configuration
+  """
   alias OpenApiSpex.{Info, OpenApi, Paths, Server}
   alias BusinessIntelligenceWeb.{Endpoint, Router}
   @behaviour OpenApi

@@ -85,7 +85,7 @@ defmodule BusinessIntelligence.DataObject do
     if exists?(name) do
       {:ok, url} =
         ExAws.Config.new(:s3)
-        |> ExAws.S3.presigned_url(:get_object, bucket(), name, expires_in: 3600)
+        |> ExAws.S3.presigned_url(:get, bucket(), name, expires_in: 3600)
 
       {:ok, url}
     else

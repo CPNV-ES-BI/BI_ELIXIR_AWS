@@ -21,9 +21,11 @@ package BusinessIntelligence {
     CloudClient <|.. DataObject
 
     Exception <|-- ObjectNotFound
+    Exception <|-- AlreadyExists
     Exception <|-- UnexpectedResponse
 
     DataObject ..> ObjectNotFound: Throw
+    DataObject ..> AlreadyExists: Throw
     DataObject ..> UnexpectedResponse: Throw
 }
 
