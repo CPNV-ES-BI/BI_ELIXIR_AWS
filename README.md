@@ -1,4 +1,4 @@
-# BI_AWS_ELIXIR
+# BI_ELIXIR_AWS
 <a name="readme-top"></a>
 <details>
   <summary>Table of Contents</summary>
@@ -133,6 +133,8 @@ In can either install Elixir's binaries directly on your machine or you can use 
 
 #### Docker
 
+If you don't want to clone this project in order to use the Docker images, you can pull them from the [Dockerhub repository](https://hub.docker.com/r/thynkon/bi_elixir_aws).
+
 ##### Development
 
 1. Build docker's image
@@ -144,7 +146,7 @@ In can either install Elixir's binaries directly on your machine or you can use 
 2. Launch the container using `docker-compose`
 
    ```sh
-   docker-compose up -d
+   docker-compose --project-name bi_elixir_aws up -d
    ```
 
    This will open two ports: `4000` and `4369`. The later is used by [the observer](https://elixir-lang.org/getting-started/debugging.html#observer). This tool allows to connect to a remote Elixir Node and watch the running processes (this is one of the reasons why Elixir is a perfect solution for distributed systems).

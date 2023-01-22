@@ -16,16 +16,17 @@ package BusinessIntelligence {
 
     class Exception
     class ObjectNotFound
+    class ObjectAlreadyExists
     class UnexpectedResponse
 
     CloudClient <|.. DataObject
 
     Exception <|-- ObjectNotFound
-    Exception <|-- AlreadyExists
+    Exception <|-- ObjectAlreadyExists
     Exception <|-- UnexpectedResponse
 
     DataObject ..> ObjectNotFound: Throw
-    DataObject ..> AlreadyExists: Throw
+    DataObject ..> ObjectAlreadyExists: Throw
     DataObject ..> UnexpectedResponse: Throw
 }
 
