@@ -61,7 +61,6 @@ defmodule DataObjectSpec do
 
   describe "Create files and check if they exist" do
     before do
-      Logger.debug("UPLOAD ====> Delete all files in #{@upload_dir}")
       delete_all_objects(@upload_dir, DataObject.bucket())
       DataObject.create("#{@upload_dir}/ALREADY_EXISTING_FILE.txt")
     end
@@ -75,7 +74,7 @@ defmodule DataObjectSpec do
       status = DataObject.exists?(existing_file)
 
       # Then
-      assert {:ok, _object} = result
+      assert :ok = result
       assert status == true
     end
 
@@ -98,7 +97,7 @@ defmodule DataObjectSpec do
       result = DataObject.create(name)
 
       # Then
-      assert {:ok, _object} = result
+      assert :ok = result
     end
 
     finally do
@@ -183,7 +182,7 @@ defmodule DataObjectSpec do
     it "DeleteObject_ObjectExists_ObjectDeleted" do
       # Given
       existing_file = "#{@delete_dir}/EXISTING_FILE.txt"
-      {:ok, _file} = DataObject.create(existing_file)
+      :ok = DataObject.create(existing_file)
 
       # When
       status = DataObject.delete(existing_file)
@@ -196,8 +195,8 @@ defmodule DataObjectSpec do
       # Given
       existing_file_1 = "#{@delete_dir}/EXISTING_FILE_1.txt"
       existing_file_2 = "#{@delete_dir}/EXISTING_FILE_2.txt"
-      {:ok, _file_1} = DataObject.create(existing_file_1)
-      {:ok, _file_2} = DataObject.create(existing_file_2)
+      :ok = DataObject.create(existing_file_1)
+      :ok = DataObject.create(existing_file_2)
 
       # When
       status = DataObject.delete("#{@delete_dir}", recursive: true)

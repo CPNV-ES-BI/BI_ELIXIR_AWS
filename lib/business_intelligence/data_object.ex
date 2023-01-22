@@ -8,18 +8,20 @@ defmodule BusinessIntelligence.DataObject do
 
   def bucket, do: System.fetch_env!("AWS_BUCKET")
 
-  @spec create(<<_::40, _::_*8>>) :: {:error, :already_exists} | {:ok, %{}}
+  @spec create(binary, any) :: :ok | {:error, :already_exists | :unexpected_response}
   def create(name, content \\ "") do
     if exists?(name) do
       Logger.warn("#{name} already exists")
+      Logger.debug("Matching :already_exists")
       {:error, :already_exists}
     else
       result = ExAws.S3.put_object(bucket(), name, content) |> ExAws.request()
+      Logger.debug("Got result ==> #{inspect(result)}")
 
       case result do
         {:ok, %{status_code: 200}} ->
           Logger.info("File #{name} successfully created")
-          {:ok, %{}}
+          :ok
 
         # Cannot reproduce this error during tests as they rely on AWS infrastructure problems
         # coveralls-ignore-start
@@ -124,7 +126,13 @@ defmodule BusinessIntelligence.DataObject do
         {:ok, [%{body: body, status_code: 200}]} ->
           # For some reason, I receive an XML string instead of a JSON one
           parsed_xml = parse(body)
-          deleted_files = parsed_xml |> SweetXml.xpath(~x"//DeleteResult/Deleted/Key/text()"l)
+
+          deleted_files =
+            parsed_xml
+            |> SweetXml.xpath(~x"//DeleteResult/Deleted/Key/text()"l)
+            |> Enum.map(fn file -> List.to_string(file) end)
+
+          Logger.debug("Deleted files: #{inspect(deleted_files)}")
           {:ok, deleted_files}
 
         {:error, {:http_error, _, %{status_code: 404}}} ->
