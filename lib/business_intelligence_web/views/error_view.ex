@@ -7,6 +7,9 @@ defmodule BusinessIntelligenceWeb.ErrorView do
   # def render("500.json", _assigns) do
   #   %{errors: %{detail: "Internal Server Error"}}
   # end
+  def render("400.json", %{reason: reason}) do
+    %{error: %{code: 400, message: reason}}
+  end
 
   def render("401.json", %{reason: reason}) do
     %{error: %{code: 401, message: reason}}

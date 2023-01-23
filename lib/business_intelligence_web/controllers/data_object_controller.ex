@@ -63,13 +63,13 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
 
   @spec show(any, map) :: {:error, :object_not_found | :unexpected_response} | Plug.Conn.t()
   def show(conn, %{"name" => name}) do
-    {:ok, fullname, content_type} = fetch_fullname(conn, name)
-
-    with {:ok, content} <- DataObject.download(fullname) do
-      conn
-      |> put_resp_content_type(content_type)
-      |> put_resp_header("content-disposition", "attachment; filename=\"#{fullname}\"")
-      |> send_resp(200, content)
+    with {:ok, fullname, content_type} <- fetch_fullname(conn, name) do
+      with {:ok, content} <- DataObject.download(fullname) do
+        conn
+        |> put_resp_content_type(content_type)
+        |> put_resp_header("content-disposition", "attachment; filename=\"#{fullname}\"")
+        |> send_resp(200, content)
+      end
     end
   end
 
@@ -90,10 +90,10 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
 
   @spec publish(any, map) :: {:error, :object_not_found} | Plug.Conn.t()
   def publish(conn, %{"name" => name}) do
-    {:ok, fullname, _} = fetch_fullname(conn, name)
-
-    with {:ok, url} <- DataObject.publish(fullname) do
-      render(conn, "publish.json", data_object: %{name: fullname, url: url})
+    with {:ok, fullname, _content_type} <- fetch_fullname(conn, name) do
+      with {:ok, url} <- DataObject.publish(fullname) do
+        render(conn, "publish.json", data_object: %{name: fullname, url: url})
+      end
     end
   end
 
@@ -114,16 +114,21 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
 
   @spec delete(any, map) :: {:error, :object_not_found | :unexpected_response} | Plug.Conn.t()
   def delete(conn, %{"name" => name}) do
-    {:ok, fullname, _} = fetch_fullname(conn, name)
-
-    with {:ok, data_objects} <- DataObject.delete(fullname) do
-      render(conn, "delete.json", data_objects: data_objects)
+    with {:ok, fullname, _content_type} <- fetch_fullname(conn, name) do
+      with {:ok, data_objects} <- DataObject.delete(fullname) do
+        render(conn, "delete.json", data_objects: data_objects)
+      end
     end
   end
 
   defp fetch_fullname(conn, name) do
-    content_type = get_req_header(conn, "content-type") |> Enum.at(0)
-    extension = MIME.extensions(content_type) |> Enum.at(0)
-    {:ok, "#{name}.#{extension}", content_type}
+    content_type = get_req_header(conn, "content-type")
+
+    if Enum.count(content_type) > 0 do
+      extension = MIME.extensions(content_type |> Enum.at(0)) |> Enum.at(0)
+      {:ok, "#{name}.#{extension}", content_type |> Enum.at(0)}
+    else
+      {:error, :bad_request}
+    end
   end
 end

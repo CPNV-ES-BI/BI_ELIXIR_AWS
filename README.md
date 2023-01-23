@@ -268,7 +268,7 @@ mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
 **Inside the container**
 
 ```sh
-docker-compose exec mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
+docker-compose exec app mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
 ```
 
 This creates a file named `openapi.json` at the project's root.
