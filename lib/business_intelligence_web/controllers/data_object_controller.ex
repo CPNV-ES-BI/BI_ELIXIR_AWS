@@ -105,7 +105,8 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
         type: :string,
         description: "The type of file you want to delete"
       ],
-      name: [in: :path, description: "Data object(s)", type: :string, example: "my_file"]
+      name: [in: :path, description: "Data object(s)", type: :string, example: "my_file"],
+      recursive: [in: :query, type: :boolean, description: "Delete data objects recursively"]
     ],
     responses: [
       ok: {"Deleted files", "application/json", DeleteResponse}
@@ -113,9 +114,19 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
   )
 
   @spec delete(any, map) :: {:error, :object_not_found | :unexpected_response} | Plug.Conn.t()
-  def delete(conn, %{"name" => name}) do
+  def delete(conn, %{"name" => name} = arguments) do
+    recursive =
+      if Map.has_key?(arguments, "recursive") do
+        recursive = arguments["recursive"] |> String.downcase()
+        if recursive == "true", do: true, else: false
+      else
+        false
+      end
+
+    Logger.debug("Delete recursive: #{inspect(recursive)}")
+
     with {:ok, fullname, _content_type} <- fetch_fullname(conn, name) do
-      with {:ok, data_objects} <- DataObject.delete(fullname) do
+      with {:ok, data_objects} <- DataObject.delete(fullname, recursive) do
         render(conn, "delete.json", data_objects: data_objects)
       end
     end
