@@ -1,37 +1,36 @@
 @startuml DataObject
-skinparam classAttributeIconSize 0
+
 package BusinessIntelligence {
     interface CloudClient {
-     +exists(name: String): Boolean
-     +create(name: String): File
-     +download(name: String): File
-     +publish(name: String): String
-     +delete(name: String, recursive: Boolean): File
+     +doesExist(path: String): Task<Boolean>
+     +create(path: String, content: String): Task<Boolean>
+     +download(path: String): Task<String>
+     +publish(path: String): Task<String>
+     +delete(path: String, recursive: Boolean = False): Task<String[]>
     }
 
     class DataObject {
      -bucket: String
-     -sdkClient: AmazonSDKClient
+     -client: AWS.S3
     }
-
-    class Exception
-    class ObjectNotFound
-    class ObjectAlreadyExists
-    class UnexpectedResponse
 
     CloudClient <|.. DataObject
 
-    Exception <|-- ObjectNotFound
-    Exception <|-- ObjectAlreadyExists
-    Exception <|-- UnexpectedResponse
+    DataObject ..> ObjectNotFound: Throws
+    DataObject ..> ObjectAlreadyExists: Throws
+    DataObject ..> UnexpectedResponse: Throws
 
-    DataObject ..> ObjectNotFound: Throw
-    DataObject ..> ObjectAlreadyExists: Throw
-    DataObject ..> UnexpectedResponse: Throw
+    class ObjectNotFound
+    class ObjectAlreadyExists
+    class UnexpectedResponse
+    class Exception
+
+    ObjectNotFound --|> Exception
+    ObjectAlreadyExists --|> Exception
+    UnexpectedResponse --|> Exception
 }
 
-package AmazonSDK {}
-
-BusinessIntelligence ..> AmazonSDK: Imports
+package AWS_SDK {}
+DataObject ..> AWS_SDK: Imports
 
 @enduml
