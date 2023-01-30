@@ -1,8 +1,8 @@
 defmodule DataObjectSpec do
   # use ESpec, shared: true
   use ESpec
-  alias BusinessIntelligence.DataObject
   require Logger
+  alias BusinessIntelligence.DataObject
 
   @exist_dir "exist"
   @upload_dir "upload"
@@ -10,23 +10,9 @@ defmodule DataObjectSpec do
   @publish_dir "publish"
   @delete_dir "delete"
 
-  def upload_empty_file(name) do
-    ExAws.S3.put_object(DataObject.bucket(), name, "") |> ExAws.request()
-  end
-
-  def delete_all_objects(dir, bucket \\ DataObject.bucket()) do
-    stream =
-      ExAws.S3.list_objects(bucket, prefix: "#{dir}")
-      |> ExAws.stream!()
-      |> Stream.map(& &1.key)
-
-    ExAws.S3.delete_multiple_objects(bucket, stream)
-    |> ExAws.request()
-  end
-
   describe "Upload files using a helper and check if they exist" do
     before do
-      delete_all_objects(@exist_dir, DataObject.bucket())
+      DataObject.delete(@exist_dir, true)
       DataObject.create("#{@exist_dir}/EXISTING_FILE.txt")
     end
 
@@ -35,11 +21,11 @@ defmodule DataObjectSpec do
       existing_file = "#{@exist_dir}/EXISTING_FILE.TXT"
 
       # When
-      upload_empty_file(existing_file)
+      DataObject.create(existing_file)
       status = DataObject.exists?(existing_file)
 
       # Then
-      expect(status) |> to(eq(true))
+      assert status == true
     end
 
     it "DoesExist_NotExists_False" do
@@ -50,18 +36,18 @@ defmodule DataObjectSpec do
       status = DataObject.exists?(non_existing_file)
 
       # Then
-      expect(status |> to(be(false)))
+      assert status == false
     end
 
     finally do
       Logger.info("Deleting all files in #{@exist_dir}")
-      delete_all_objects(@exist_dir, DataObject.bucket())
+      DataObject.delete(@exist_dir, true)
     end
   end
 
   describe "Create files and check if they exist" do
     before do
-      delete_all_objects(@upload_dir, DataObject.bucket())
+      DataObject.delete(@upload_dir, true)
       DataObject.create("#{@upload_dir}/ALREADY_EXISTING_FILE.txt")
     end
 
@@ -102,13 +88,13 @@ defmodule DataObjectSpec do
 
     finally do
       Logger.info("Deleting all files in #{@upload_dir}")
-      delete_all_objects(@upload_dir, DataObject.bucket())
+      DataObject.delete(@upload_dir, true)
     end
   end
 
   describe "Upload and download files" do
     before do
-      delete_all_objects(@download_dir, DataObject.bucket())
+      DataObject.delete(@download_dir, true)
       DataObject.create("#{@download_dir}/EXISTING_FILE.txt", "Some content")
     end
 
@@ -136,13 +122,13 @@ defmodule DataObjectSpec do
 
     finally do
       Logger.info("Deleting all files in #{@download_dir}")
-      delete_all_objects(@download_dir, DataObject.bucket())
+      DataObject.delete(@download_dir, true)
     end
   end
 
   describe "Upload and publish files" do
     before do
-      delete_all_objects(@publish_dir, DataObject.bucket())
+      DataObject.delete(@publish_dir, true)
       DataObject.create("#{@publish_dir}/EXISTING_FILE.txt", "Some content")
     end
 
@@ -170,13 +156,13 @@ defmodule DataObjectSpec do
 
     finally do
       Logger.info("Deleting all files in #{@publish_dir}")
-      delete_all_objects(@publish_dir, DataObject.bucket())
+      DataObject.delete(@publish_dir, true)
     end
   end
 
   describe "Upload and delete files" do
     before do
-      delete_all_objects(@delete_dir, DataObject.bucket())
+      DataObject.delete(@delete_dir, true)
     end
 
     it "DeleteObject_ObjectExists_ObjectDeleted" do
@@ -203,7 +189,7 @@ defmodule DataObjectSpec do
 
       # Then
       assert {:ok, files} = status
-      expect Enum.count(files) |> to(be :>, 1)
+      assert Enum.count(files) == 2
     end
 
     it "DeleteObject_ObjectDoesntExist_ThrowException" do
@@ -230,7 +216,7 @@ defmodule DataObjectSpec do
 
     finally do
       Logger.info("Deleting all files in #{@delete_dir}")
-      delete_all_objects(@delete_dir, DataObject.bucket())
+      DataObject.delete(@delete_dir, true)
     end
   end
 end
