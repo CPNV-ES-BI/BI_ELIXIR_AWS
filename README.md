@@ -39,6 +39,7 @@
 
 <!-- GETTING STARTED -->
 ## Getting Started
+
 This is microservice written in Elixir whose purpose is to `AWS S3` as a data source to perform some techniques related to `Business Intelligence`.
 
 Since this project is written in Elixir, you will need to install the BEAM.
@@ -92,6 +93,7 @@ environment:
   - AWS_ACCESS_KEY_ID=
   - AWS_SECRET_ACCESS_KEY=
   - AWS_BUCKET=
+  - AWS_REGION=
 ```
 
 ### Installation
