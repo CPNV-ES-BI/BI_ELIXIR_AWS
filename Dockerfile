@@ -21,18 +21,30 @@ ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-$
 
 FROM ${BUILDER_IMAGE} as builder
 
+ARG UNAME=bi
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g $GID -o $UNAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME
+
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git curl vim bash watchman procps iproute2 lsof\
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
+USER $UNAME
 # install hex + rebar
 RUN mix local.hex --force && \
     mix local.rebar --force
 
 # prepare build dir
+USER root
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
+
+RUN chown -R $UNAME:$UNAME $APP_HOME
+
+USER $UNAME
 
 ENV MIX_ENV="dev"
 
