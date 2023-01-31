@@ -50,7 +50,6 @@ config :ex_aws, :hackney_opts,
   recv_timeout: 30_000
 
 config :ex_aws,
-  region: "eu-west-2",
   normalize_path: false,
   http_client: HTTPoison
 

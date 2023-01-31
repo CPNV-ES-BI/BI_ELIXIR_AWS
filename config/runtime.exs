@@ -20,6 +20,16 @@ if System.get_env("PHX_SERVER") do
   config :business_intelligence, BusinessIntelligenceWeb.Endpoint, server: true
 end
 
+aws_region =
+  System.get_env("AWS_REGION") ||
+    raise """
+    environment variable AWS_REGION is missing.
+    For example: eu-west-2
+    """
+
+config :ex_aws,
+  region: aws_region
+
 if config_env() == :prod do
   database_path =
     System.get_env("DATABASE_PATH") ||
