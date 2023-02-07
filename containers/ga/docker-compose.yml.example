@@ -2,7 +2,11 @@ version: "3.3"
 services:
   app:
     image: business_intelligence
-    build: .
+    build:
+      context: "."
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
     container_name: business_intelligence
     networks:
       phoenix:
@@ -10,11 +14,17 @@ services:
     ports:
       - "4000:4000"
     environment:
-      - AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
-      - AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
-      - AWS_BUCKET=<AWS_BUCKET>
-      - SECRET_KEY_BASE=<SECRET_KEY_BASE>
-
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_BUCKET=
+      - AWS_REGION=
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    command:
+      - "./entrypoint.sh"
+    user: 1000:1000
 networks:
   phoenix:
     driver: bridge
