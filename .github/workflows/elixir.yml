@@ -1,0 +1,116 @@
+name: Elixir CI
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+env:
+  MIX_ENV: test
+  AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    name: Build and test
+    runs-on: ubuntu-latest
+    container:
+      image: thynkon/bi_elixir_aws:ga
+      env:
+        MIX_ENV: test
+        AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ vars.AWS_REGION }}
+        MIX_HOME: "/root/.mix"
+      volumes:
+        - ${{github.action_path}}:/app
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Restore dependencies cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: |
+              deps
+              _build
+              priv/plts
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Compile dependencies
+        run: mix deps.compile
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: |
+              deps
+              _build
+              priv/plts
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Compile project
+        run: mix compile --warnings-as-error
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: |
+              deps
+              _build
+              priv/plts
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Check code format
+        run: mix format --check-formatted
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: |
+              deps
+              _build
+              priv/plts
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Run static code analysis (community good practices)
+        run: mix credo --strict
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: |
+              deps
+              _build
+              priv/plts
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Run static code analysis (software discrepancies, type errors...)
+        run: mix dialyzer
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v3.2.3
+        with:
+          path: |
+              deps
+              _build
+              priv/plts
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Run tests
+        run: mix espec

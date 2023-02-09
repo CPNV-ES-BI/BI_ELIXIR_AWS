@@ -1,0 +1,36 @@
+@startuml DataObject
+
+package BusinessIntelligence {
+    interface CloudClient {
+     +doesExist(path: String): Task<Boolean>
+     +create(path: String, content: String): Task<Boolean>
+     +download(path: String): Task<String>
+     +publish(path: String): Task<String>
+     +delete(path: String, recursive: Boolean = False): Task<String[]>
+    }
+
+    class DataObject {
+     -bucket: String
+     -client: AWS.S3
+    }
+
+    CloudClient <|.. DataObject
+
+    DataObject ..> ObjectNotFound: Throws
+    DataObject ..> ObjectAlreadyExists: Throws
+    DataObject ..> UnexpectedResponse: Throws
+
+    class ObjectNotFound
+    class ObjectAlreadyExists
+    class UnexpectedResponse
+    class Exception
+
+    ObjectNotFound --|> Exception
+    ObjectAlreadyExists --|> Exception
+    UnexpectedResponse --|> Exception
+}
+
+package AWS_SDK {}
+DataObject ..> AWS_SDK: Imports
+
+@enduml
