@@ -142,13 +142,13 @@ If you don't want to clone this project in order to use the Docker images, you c
 1. Build docker's image
 
    ```sh
-   docker-compose build
+   docker compose build
    ```
 
-2. Launch the container using `docker-compose`
+2. Launch the container using `docker compose`
 
    ```sh
-   docker-compose --project-name bi_elixir_aws up -d
+   docker compose --project-name bi_elixir_aws up -d
    ```
 
    This will open two ports: `4000` and `4369`. The later is used by [the observer](https://elixir-lang.org/getting-started/debugging.html#observer). This tool allows to connect to a remote Elixir Node and watch the running processes (this is one of the reasons why Elixir is a perfect solution for distributed systems).
@@ -164,13 +164,13 @@ Rename `docker-compose.yml.example` to `docker-compose.yml` and set the environm
 1. Build docker's image
 
    ```sh
-   docker-compose build
+   docker compose build
    ```
 
-2. Launch the container using `docker-compose`
+2. Launch the container using `docker compose`
 
    ```sh
-   docker-compose up -d
+   docker compose up -d
    ```
 
 Just like the development container, the production one exposes both `4000` and `4369` ports.
@@ -210,25 +210,25 @@ MIX_ENV=test mix coveralls.html
 In order to run all tests type:
 
 ```sh
-docker-compose exec -e MIX_ENV=test app mix espec
+docker compose exec -e MIX_ENV=test app mix espec
 ```
 
 If you want to run all tests of a file
 
 ```sh
-docker-compose exec -e MIX_ENV=test app mix espec ./spec/<FILE_TEST>.exs
+docker compose exec -e MIX_ENV=test app mix espec ./spec/<FILE_TEST>.exs
 ```
 
 Or, if you only want to run a specific test
 
 ```sh
-docker-compose exec -e MIX_ENV=test app mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
+docker compose exec -e MIX_ENV=test app mix espec ./spec/<FILE_TEST>.exs:<LINE_NUMBER>
 ```
 
 If you want to generate a `test coverage` report, type the following:
 
 ```sh
-docker-compose exec -e MIX_ENV=test app mix coveralls.html
+docker compose exec -e MIX_ENV=test app mix coveralls.html
 ```
 
 ## Documentation
@@ -270,7 +270,7 @@ mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
 **Inside the container**
 
 ```sh
-docker-compose exec app mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
+docker compose exec app mix openapi.spec.json --spec BusinessIntelligenceWeb.ApiSpec
 ```
 
 This creates a file named `openapi.json` at the project's root.
