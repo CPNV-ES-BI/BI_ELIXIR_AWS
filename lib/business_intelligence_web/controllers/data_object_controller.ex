@@ -50,7 +50,8 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
         description: "Data object name (without extension)",
         type: :string,
         example: "my_file"
-      ]
+      ],
+      path: [in: :query, type: :string, description: "Full path of the data object(s)"]
     ],
     responses: [
       ok: {
@@ -62,7 +63,9 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
   )
 
   @spec show(any, map) :: {:error, :object_not_found | :unexpected_response} | Plug.Conn.t()
-  def show(conn, %{"name" => name}) do
+  def show(conn, %{"name" => name} = params) do
+    name = if Map.has_key?(params, "path"), do: "#{params["path"]}/#{name}", else: name
+
     with {:ok, fullname, content_type} <- fetch_fullname(conn, name) do
       with {:ok, content} <- DataObject.download(fullname) do
         conn
@@ -81,7 +84,8 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
         type: :string,
         description: "The type of file you want to publish"
       ],
-      name: [in: :path, description: "Data object(s)", type: :string, example: "my_file"]
+      name: [in: :path, description: "Data object(s)", type: :string, example: "my_file"],
+      path: [in: :query, type: :string, description: "Full path of the data object(s)"]
     ],
     responses: [
       ok: {"Deleted files", "application/json", PublishResponse}
@@ -89,7 +93,9 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
   )
 
   @spec publish(any, map) :: {:error, :object_not_found} | Plug.Conn.t()
-  def publish(conn, %{"name" => name}) do
+  def publish(conn, %{"name" => name} = params) do
+    name = if Map.has_key?(params, "path"), do: "#{params["path"]}/#{name}", else: name
+
     with {:ok, fullname, _content_type} <- fetch_fullname(conn, name) do
       with {:ok, url} <- DataObject.publish(fullname) do
         render(conn, "publish.json", data_object: %{name: fullname, url: url})
@@ -106,7 +112,8 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
         description: "The type of file you want to delete"
       ],
       name: [in: :path, description: "Data object(s)", type: :string, example: "my_file"],
-      recursive: [in: :query, type: :boolean, description: "Delete data objects recursively"]
+      recursive: [in: :query, type: :boolean, description: "Delete data objects recursively"],
+      path: [in: :query, type: :string, description: "Full path of the data object(s)"]
     ],
     responses: [
       ok: {"Deleted files", "application/json", DeleteResponse}
@@ -114,10 +121,12 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
   )
 
   @spec delete(any, map) :: {:error, :object_not_found | :unexpected_response} | Plug.Conn.t()
-  def delete(conn, %{"name" => name} = arguments) do
+  def delete(conn, %{"name" => name} = params) do
+    name = if Map.has_key?(params, "path"), do: "#{params["path"]}/#{name}", else: name
+
     recursive =
-      if Map.has_key?(arguments, "recursive") do
-        recursive = arguments["recursive"] |> String.downcase()
+      if Map.has_key?(params, "recursive") do
+        recursive = params["recursive"] |> String.downcase()
         if recursive == "true", do: true, else: false
       else
         false
