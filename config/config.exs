@@ -61,7 +61,7 @@ config :ex_aws, :retries,
 
 if Mix.env() != :prod do
   config :git_hooks,
-    mix_path: "docker-compose exec app",
+    mix_path: "docker-compose exec app mix",
     verbose: true,
     hooks: [
       pre_commit: [
