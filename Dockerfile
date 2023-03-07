@@ -43,10 +43,11 @@ WORKDIR $APP_HOME
 
 RUN chown -R $UNAME:$UNAME $APP_HOME
 
-COPY ./entrypoint.sh /app
-RUN chmod +x /app/entrypoint.sh
+COPY ./entrypoint.sh .
+RUN sed -i 's/\r$//' ./entrypoint.sh \
+    && chmod +x ./entrypoint.sh
 
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
 
 USER $UNAME
 
