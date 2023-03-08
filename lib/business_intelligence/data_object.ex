@@ -81,11 +81,11 @@ defmodule BusinessIntelligence.DataObject do
     end
   end
 
-  def publish(name) do
+  def publish(name, timeout \\ 3600) do
     if exists?(name) do
       {:ok, url} =
         ExAws.Config.new(:s3)
-        |> ExAws.S3.presigned_url(:get, bucket(), name, expires_in: 3600)
+        |> ExAws.S3.presigned_url(:get, bucket(), name, expires_in: timeout)
 
       {:ok, url}
     else

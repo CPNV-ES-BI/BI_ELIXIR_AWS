@@ -30,6 +30,21 @@ defmodule BusinessIntelligenceWeb.Schemas do
     })
   end
 
+  defmodule PublishRequest do
+    @moduledoc """
+    Publish Request OpenAPI schema
+    """
+    require OpenApiSpex
+
+    OpenApiSpex.schema(%{
+      title: "DataObjectPublishRequest",
+      type: :object,
+      example: %{
+        "timeout" => 3600
+      }
+    })
+  end
+
   defmodule PublishResponse do
     @moduledoc """
     Publish Response OpenAPI schema

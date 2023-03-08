@@ -7,6 +7,7 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
     CreateResponse,
     DeleteResponse,
     DownloadResponse,
+    PublishRequest,
     PublishResponse
   }
 
@@ -87,6 +88,9 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
       name: [in: :path, description: "Data object(s)", type: :string, example: "my_file"],
       path: [in: :query, type: :string, description: "Full path of the data object(s)"]
     ],
+    request_body: {
+      PublishRequest
+    },
     responses: [
       ok: {"Deleted files", "application/json", PublishResponse}
     ]
@@ -98,6 +102,16 @@ defmodule BusinessIntelligenceWeb.DataObjectController do
 
     with {:ok, fullname, _content_type} <- fetch_fullname(conn, name) do
       with {:ok, url} <- DataObject.publish(fullname) do
+        render(conn, "publish.json", data_object: %{name: fullname, url: url})
+      end
+    end
+  end
+
+  def publish(conn, %{"name" => name, "timeout" => timeout} = params) do
+    name = if Map.has_key?(params, "path"), do: "#{params["path"]}/#{name}", else: name
+
+    with {:ok, fullname, _content_type} <- fetch_fullname(conn, name) do
+      with {:ok, url} <- DataObject.publish(fullname, timeout) do
         render(conn, "publish.json", data_object: %{name: fullname, url: url})
       end
     end

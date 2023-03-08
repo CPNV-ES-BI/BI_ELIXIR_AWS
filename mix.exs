@@ -34,7 +34,7 @@ defmodule BusinessIntelligence.MixProject do
   def application do
     [
       mod: {BusinessIntelligence.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :poison]
     ]
   end
 
